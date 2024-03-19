@@ -47,9 +47,7 @@ PLAYERY_COORDINATE_2 = 20
 PLAYER1 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERSIZE1, PLAYERSIZE2, PLAYERX_COORDINATE_1, PLAYERY_COORDINATE_1))
 PLAYER2 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERSIZE1, PLAYERSIZE2, PLAYERX_COORDINATE_2, PLAYERY_COORDINATE_2))
 
-
-
-
+# nnnn
 RUNNING = True
 
 while RUNNING:
@@ -74,13 +72,9 @@ while RUNNING:
     if KEYS[pygame.K_DOWN]:
         PLAYER2.y -= 300 * 0.1
     
-        
-
-
-    
-    
-
+    # jjhgghh    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
     
+    # test
