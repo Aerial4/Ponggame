@@ -54,6 +54,9 @@ while RUNNING:
      
     SCREEN.fill(BLACK)
 
+    PLAYER1 = pygame.draw.rect(SCREEN, GREEN, PLAYER1)
+    PLAYER2 = pygame.draw.rect(SCREEN, GREEN, PLAYER2)
+
     # KEYBINDS
 
     KEYS = pygame.key.get_pressed()
