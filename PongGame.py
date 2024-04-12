@@ -1,5 +1,11 @@
 # Slutprojekt (PONG) - # Made by Arda
 
+# COMMANDS TO PUBLISH [GIT.HUB]
+# 1) git init
+# 2) git commit
+# 3) git add "pong.py"
+# 4) git commit -m "comment"
+# 5) git push
 
 # LIBARIES
 import pygame
@@ -33,29 +39,32 @@ FRAMERATE = CLOCK.tick(10)
 # PLAYERS [1, 2, 3]
 
 # 1) PLAYER SIZE AND COORDINATES
-PLAYERSIZE1 = 20
-PLAYERSIZE2 = 20
+PLAYERSIZE_X = 10
+PLAYERSIZE_Y= 80
 
 # PLAYER 1 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_1 = 360
-PLAYERY_COORDINATE_1 = 600
+PLAYERX_COORDINATE_2 = 1
+PLAYERY_COORDINATE_2 = 250
 
 # PLAYER 2 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_2 = 20
-PLAYERY_COORDINATE_2 = 20
+PLAYERX_COORDINATE_1 = 300
+PLAYERY_COORDINATE_1 = 600
 
-PLAYER1 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERSIZE1, PLAYERSIZE2, PLAYERX_COORDINATE_1, PLAYERY_COORDINATE_1))
-PLAYER2 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERSIZE1, PLAYERSIZE2, PLAYERX_COORDINATE_2, PLAYERY_COORDINATE_2))
 
-# nnnn
+# WORK IN PROGRESS
+PLAYER1 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_2, PLAYERY_COORDINATE_2, PLAYERSIZE_X, PLAYERSIZE_Y))
+PLAYER2 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_1, PLAYERY_COORDINATE_1, PLAYERSIZE_X, PLAYERSIZE_Y))
+
+
+# WHILE PROGRAM IS RUNNING
 RUNNING = True
 
 while RUNNING:
      
     SCREEN.fill(BLACK)
+    PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
+    PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
 
-    PLAYER1 = pygame.draw.rect(SCREEN, GREEN, PLAYER1)
-    PLAYER2 = pygame.draw.rect(SCREEN, GREEN, PLAYER2)
 
     # KEYBINDS
 
@@ -63,17 +72,21 @@ while RUNNING:
 
     # KEYBINDS [PLAYER 1]
     if KEYS[pygame.K_w]:
-        PLAYER1.y -= 300 * 0.1
+        PLAYER1.y -= 10 * 0.1
+
 
     if KEYS[pygame.K_s]:
-        PLAYER1.y += 300 * 0.1
+        PLAYER1.y += 10 * 0.1
     
     # KEYBINDS [PLAYER 2]
     if KEYS[pygame.K_UP]:
-        PLAYER2.y -= 300 * 0.1
+        PLAYER2.y -= 10 * 0.1
     
     if KEYS[pygame.K_DOWN]:
-        PLAYER2.y -= 300 * 0.1
+        PLAYER2.y += 10 * 0.1
+
+  # Updates every frame
+    pygame.display.flip()
     
     # jjhgghh    
     for event in pygame.event.get():
