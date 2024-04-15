@@ -40,7 +40,7 @@ FRAMERATE = CLOCK.tick(10)
 
 # 1) PLAYER SIZE AND COORDINATES
 PLAYERSIZE_X = 10
-PLAYERSIZE_Y= 80
+PLAYERSIZE_Y = 80
 
 # PLAYER 1 [PLAYER POSITION IN SCREEN]
 PLAYERX_COORDINATE_2 = 1
@@ -62,9 +62,9 @@ RUNNING = True
 while RUNNING:
      
     SCREEN.fill(BLACK)
-    PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
-    PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
 
+    PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
+    PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
 
     # KEYBINDS
 
@@ -72,18 +72,31 @@ while RUNNING:
 
     # KEYBINDS [PLAYER 1]
     if KEYS[pygame.K_w]:
+        time.sleep(0.005)
         PLAYER1.y -= 10 * 0.1
 
-
     if KEYS[pygame.K_s]:
+        time.sleep(0.005)
         PLAYER1.y += 10 * 0.1
+        
     
+
     # KEYBINDS [PLAYER 2]
     if KEYS[pygame.K_UP]:
         PLAYER2.y -= 10 * 0.1
     
     if KEYS[pygame.K_DOWN]:
         PLAYER2.y += 10 * 0.1
+
+    
+    # BOUNDARIES [W.I.P]
+    if PLAYER1.y == 2:
+        KEYS[pygame.K_w] = pygame.key.ScancodeWrapper
+
+        KEYS[pygame.K_s] = True
+
+    if PLAYER1.y == -10:
+        KEYS[pygame.K_s] = False
 
   # Updates every frame
     pygame.display.flip()
