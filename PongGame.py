@@ -21,6 +21,9 @@ RED = pygame.Color(255, 0, 0)
 BLUE = pygame.Color(0, 0, 255)
 GREEN = pygame.Color(0, 255, 0)
 
+# DEFINING THE FONT
+#FONT = pygame.font.Font("Bauhaus 93", 20)
+
 
 # SCREEN ADJUSTMENTS [1, 2, 3, 4, 5]
 
@@ -36,7 +39,9 @@ SCREEN_TITLE = pygame.display.set_caption("Pong")
 CLOCK = pygame.time.Clock()
 FRAMERATE = CLOCK.tick(10)
 
-# 4) COUNTDOWN
+
+# 4 POINT SYSTEM [W.I.P]
+
 '''
 while SCREEN_TITLE == pygame.display.set_caption("GET READY"):
     time.sleep(1)
@@ -66,28 +71,45 @@ PLAYERSIZE_X = 10
 PLAYERSIZE_Y = 80
 
 # PLAYER 1 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_2 = 1
+PLAYERX_COORDINATE_2 = 20
 PLAYERY_COORDINATE_2 = 250
 
 # PLAYER 2 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_1 = 790
+PLAYERX_COORDINATE_1 = 770
 PLAYERY_COORDINATE_1 = 250
 
-
+ 
 # DEFINING PLAYER(S), SPECIFIED COORDINATES, SIZE
 PLAYER1 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_2, PLAYERY_COORDINATE_2, PLAYERSIZE_X, PLAYERSIZE_Y))
 PLAYER2 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_1, PLAYERY_COORDINATE_1, PLAYERSIZE_X, PLAYERSIZE_Y))
 
+# BALL [1, 2, 3]
+
+# 1) BALL SIZE
+BALLSIZE_X = 20
+BALLSIZE_Y = 20
+
+# 2) BALL COORDINATES
+BALLCOORDINATE_1 = 385
+BALLCOORDINATE_2 = 280
+
+# DEFINING BALL, SPECIFIED COORDINATES, SIZE
+BALL = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(BALLCOORDINATE_1, BALLCOORDINATE_2, BALLSIZE_X, BALLSIZE_Y))
 
 # WHILE PROGRAM IS RUNNING
 RUNNING = True
+
 while RUNNING:
         
-
     SCREEN.fill(BLACK)
-
+    
+    # DRAWING PLAYER(S)
     PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
     PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
+    # DRAWING BALL
+    BALL = pygame.draw.rect(SCREEN, WHITE, BALL)
+
+    
 
     # KEYBINDS
     KEYS = pygame.key.get_pressed()
@@ -124,46 +146,34 @@ while RUNNING:
     # PLAYER 1 HOLDING [W] UPWARDS
     if PLAYER1.y == 1:
         KEYS = pygame.K_w
-        PLAYER1.y = 520
-    
+        PLAYER1.y = 500
+
     # PLAYER 1 HOLDING [S] DOWNWARDS
     elif PLAYER1.y == 520:
         KEYS = pygame.K_s
-        PLAYER1.y = 1
-    
-    if PLAYER2.y == 1:
-        KEYS = pygame.K_w
-        PLAYER2.y = 520
-    
-    elif PLAYER2.y == 520:
-        KEYS = pygame.K_s
-        PLAYER2.y = 1
-
-
-    
-    
-   
-
-      
-   # elif PLAYER1.y < 3:
-      # pygame.K_w = True
-    
-   # if PLAYER1.y == -1:
-       # pygame.K_s = False
-    
-    
+        PLAYER1.y = 20
   
        
-    
-    #elif PLAYER1.y 
+    # PLAYER 2 HOLDING [ARROW KEY UP]
+    if PLAYER2.y == 1:
+        KEYS = pygame.K_w
+        PLAYER2.y = 500
 
-   # if PLAYER1.y == -10:
-    #    KEYS[pygame.K_s]
+    # PLAYER 2 HOLDING [ARROW KEY DOWN]
+    elif PLAYER2.y == 520:
+        KEYS = pygame.K_s
+        PLAYER2.y = 20
+    
+    # PLAYER HITTING THE BALL
+    
+    
+
+
 
   # Updates every frame
     pygame.display.flip()
     
-    # jjhgghh    
+    # jjhgghma   
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
