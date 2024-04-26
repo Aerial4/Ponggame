@@ -17,7 +17,6 @@ import time
 pygame.font.init()
 
 
-
 # DEFINING COLORS
 BLACK = pygame.Color(0, 0, 0)
 WHITE = pygame.Color(255, 255, 255)
@@ -41,20 +40,30 @@ CLOCK = pygame.time.Clock()
 FRAMERATE = CLOCK.tick(10)
 
 
-# 4 POINT SYSTEM [1, 2, 3, 4]
+# 4 SCORE SYSTEM [1, 2, 3, 4]
 
 # 1) PLAYER SCORE
 SCORE_PLAYER1 = 0
 SCORE_PLAYER2 = 0
 
 # 2) DEFINING FONT
-FONT = pygame.font.SysFont("Tempus Sans ITC", 25)
+FONT = pygame.font.SysFont("Tempus Sans ITC", 20)
 
 # 3) TWO DIFFERENT TEXTS
+
 TEXT1 = FONT.render("P1: 0", True, WHITE)
 TEXT2 = FONT.render("P2: 0", True, WHITE)
 TEXTRECT1 = TEXT1.get_rect()
 TEXTRECT2 = TEXT2.get_rect()
+
+# SHOWING KEYBINDS 
+TEXT_KEY1 = FONT.render("KEYBINDS: UP, DOWN", True, WHITE)
+TEXT_KEY2 = FONT.render("KEYBINDS: [W], [S]", True, WHITE)
+TEXTRECT_KEY1 = TEXT1.get_rect()
+TEXTRECT_KEY2 = TEXT2.get_rect()
+TEXTRECT_KEY1.center = (550, 550)
+TEXTRECT_KEY2.center = (100, 550)
+
 
 # 4) TEXT DISPLAY COORDINATES
 TEXTRECT1.center = (200, 50)
@@ -120,10 +129,15 @@ RUNNING = True
 while RUNNING:
         
     SCREEN.fill(BLACK)
-
-    SCREEN.blit
+    
+    # DISPLAYING PLAYER SCORE
     SCREEN.blit(TEXT1, TEXTRECT1)
     SCREEN.blit(TEXT2, TEXTRECT2)
+
+    # DISPLAYING PLAYER KEYBINDS FOR 3 SECONDS
+    SCREEN.blit(TEXT_KEY1, TEXTRECT_KEY1) and SCREEN.blit(TEXT_KEY2, TEXTRECT_KEY2)
+    
+        
    
 
     # DRAWING PLAYER(S)
@@ -131,7 +145,6 @@ while RUNNING:
     PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
     # DRAWING BALL
     BALL = pygame.draw.rect(SCREEN, WHITE, BALL)
-
     
 
     # KEYBINDS
@@ -150,14 +163,13 @@ while RUNNING:
         PLAYER1.y += 10 * 0.1
         
     
-
     # KEYBINDS [PLAYER 2]
         
     # UP 
     if KEYS[pygame.K_UP]:
         time.sleep(0.005)
         PLAYER2.y -= 10 * 0.1
-    
+
     # DOWN
     if KEYS[pygame.K_DOWN]:
         time.sleep(0.005)
