@@ -13,6 +13,10 @@ import pygame
 import random
 import time
 
+# IMPORTING FONT
+pygame.font.init()
+
+
 
 # DEFINING COLORS
 BLACK = pygame.Color(0, 0, 0)
@@ -20,9 +24,6 @@ WHITE = pygame.Color(255, 255, 255)
 RED = pygame.Color(255, 0, 0)
 BLUE = pygame.Color(0, 0, 255)
 GREEN = pygame.Color(0, 255, 0)
-
-# DEFINING THE FONT
-#FONT = pygame.font.Font("Bauhaus 93", 20)
 
 
 # SCREEN ADJUSTMENTS [1, 2, 3, 4, 5]
@@ -40,7 +41,24 @@ CLOCK = pygame.time.Clock()
 FRAMERATE = CLOCK.tick(10)
 
 
-# 4 POINT SYSTEM [W.I.P]
+# 4 POINT SYSTEM [1, 2, 3, 4]
+
+# 1) PLAYER SCORE
+SCORE_PLAYER1 = 0
+SCORE_PLAYER2 = 0
+
+# 2) DEFINING FONT
+FONT = pygame.font.SysFont("Tempus Sans ITC", 25)
+
+# 3) TWO DIFFERENT TEXTS
+TEXT1 = FONT.render("P1: 0", True, WHITE)
+TEXT2 = FONT.render("P2: 0", True, WHITE)
+TEXTRECT1 = TEXT1.get_rect()
+TEXTRECT2 = TEXT2.get_rect()
+
+# 4) TEXT DISPLAY COORDINATES
+TEXTRECT1.center = (200, 50)
+TEXTRECT2.center = (600, 50)
 
 '''
 while SCREEN_TITLE == pygame.display.set_caption("GET READY"):
@@ -93,7 +111,7 @@ BALLSIZE_Y = 20
 BALLCOORDINATE_1 = 385
 BALLCOORDINATE_2 = 280
 
-# DEFINING BALL, SPECIFIED COORDINATES, SIZE
+# 3) DEFINING BALL, SPECIFIED COORDINATES, SIZE
 BALL = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(BALLCOORDINATE_1, BALLCOORDINATE_2, BALLSIZE_X, BALLSIZE_Y))
 
 # WHILE PROGRAM IS RUNNING
@@ -102,7 +120,12 @@ RUNNING = True
 while RUNNING:
         
     SCREEN.fill(BLACK)
-    
+
+    SCREEN.blit
+    SCREEN.blit(TEXT1, TEXTRECT1)
+    SCREEN.blit(TEXT2, TEXTRECT2)
+   
+
     # DRAWING PLAYER(S)
     PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
     PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
