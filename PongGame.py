@@ -1,4 +1,4 @@
-# Slutprojekt (PONG) - # Made by Arda
+# Slutprojekt (PONG) - # Changes made by Arda
 
 # COMMANDS TO PUBLISH [GIT.HUB]
 # 1) git init
@@ -7,215 +7,205 @@
 # 4) git commit -m "comment"
 # 5) git push
 
-
 # LIBARIES
 import pygame
-import random
-import time
 
 # IMPORTING FONT
 pygame.font.init()
 
-
-# DEFINING COLORS
-BLACK = pygame.Color(0, 0, 0)
-WHITE = pygame.Color(255, 255, 255)
-RED = pygame.Color(255, 0, 0)
-BLUE = pygame.Color(0, 0, 255)
-GREEN = pygame.Color(0, 255, 0)
+pygame.init()
 
 
-# SCREEN ADJUSTMENTS [1, 2, 3, 4, 5]
 
-# 1) WINDOW SIZE
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-
-# 2) WINDOW SCREEN
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-SCREEN_TITLE = pygame.display.set_caption("Pong")
-
-# 3) FRAMERATE
-CLOCK = pygame.time.Clock()
-FRAMERATE = CLOCK.tick(10)
-
-
-'''
-while SCREEN_TITLE == pygame.display.set_caption("GET READY"):
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("5")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("4")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("3")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("2")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("1")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("START")
-    time.sleep(1)
-    SCREEN_TITLE = pygame.display.set_caption("Pong")
-    break 
-'''
-
-# 5) SCORE TEXT [W.I.P]
-
-
-# PLAYERS [1, 2, 3]
-
-# 1) PLAYER SIZE AND COORDINATES
-PLAYERSIZE_X = 10
-PLAYERSIZE_Y = 80
-
-# PLAYER 1 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_2 = 20
-PLAYERY_COORDINATE_2 = 250
-
-# PLAYER 2 [PLAYER POSITION IN SCREEN]
-PLAYERX_COORDINATE_1 = 770
-PLAYERY_COORDINATE_1 = 250
-
- 
-# DEFINING PLAYER(S), SPECIFIED COORDINATES, SIZE
-PLAYER1 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_2, PLAYERY_COORDINATE_2, PLAYERSIZE_X, PLAYERSIZE_Y))
-PLAYER2 = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(PLAYERX_COORDINATE_1, PLAYERY_COORDINATE_1, PLAYERSIZE_X, PLAYERSIZE_Y))
-
-# BALL [1, 2, 3]
-
-# 1) BALL SIZE
-BALLSIZE_X = 20
-BALLSIZE_Y = 20
-
-# 2) BALL COORDINATES
-BALLCOORDINATE_X = 385
-BALLCOORDINATE_Y = 280
-
-
-# 3) DEFINING BALL, SPECIFIED COORDINATES, SIZE
-BALL = pygame.draw.rect(SCREEN, WHITE, pygame.Rect(BALLCOORDINATE_X, BALLCOORDINATE_Y, BALLSIZE_X, BALLSIZE_Y))
-
-
-# SCORE SYSTEM [1, 2, 3, 4]
-
-# 1) PLAYER SCORE
-SCORE_P1 = "0"
-SCORE_P2 = "0"
-
-# 2) DEFINING FONT
+# DEFINING FONT THAT IS USED TO RENDER THE TEXT
 FONT = pygame.font.SysFont("Tempus Sans ITC", 20)
 
-# 3) TWO DIFFERENT TEXTS
-TEXT1 = FONT.render("P1: " + SCORE_P1, True, WHITE)
-TEXT2 = FONT.render("P2: " + SCORE_P2, True, WHITE)
-TEXTRECT1 = TEXT1.get_rect()
-TEXTRECT2 = TEXT2.get_rect()
+# RGB values of standard colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 
-# SHOWING KEYBINDS 
-TEXT_KEY1 = FONT.render("KEYBINDS: [UP], [DOWN]", True, WHITE)
-TEXT_KEY2 = FONT.render("KEYBINDS: [W], [S]", True, WHITE)
-TEXTRECT_KEY1 = TEXT1.get_rect()
-TEXTRECT_KEY2 = TEXT2.get_rect()
-TEXTRECT_KEY1.center = (550, 550)
-TEXTRECT_KEY2.center = (100, 550)
+# Basic parameters of the screen
+SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Pong")
+
+CLOCK = pygame.time.Clock() 
+FPS = 60
+
+# PLAYER CLASS
+class PLAYER:
+		# Take the initial position, dimensions, speed and color of the object
+	def __init__(self, posx, posy, width, height, speed, color):
+		self.posx = posx
+		self.posy = posy
+		self.width = width
+		self.height = height
+		self.speed = speed
+		self.color = color
+		# Rect that is used to control the position and collision of the object
+		self.PLAYERRECT = pygame.Rect(posx, posy, width, height)
+		# Object that is blit on the screen
+		self.PLAYER = pygame.draw.rect(SCREEN, self.color, self.PLAYERRECT)
+
+	# Used to display the object on the screen
+	def display(self):
+		self.PLAYER = pygame.draw.rect(SCREEN, self.color, self.PLAYERRECT)
+
+	def update(self, yFac):
+		self.posy = self.posy + self.speed*yFac
+
+		# Restricting the striker to be below the top surface of the screen
+		if self.posy <= 0:
+			self.posy = 0
+		# Restricting the striker to be above the bottom surface of the screen
+		elif self.posy + self.height >= SCREEN_HEIGHT:
+			self.posy = SCREEN_HEIGHT-self.height
+
+		# Updating the rect with the new values
+		self.PLAYERRECT = (self.posx, self.posy, self.width, self.height)
+
+	def displayScore(self, TEXT, score, x, y, color):
+		TEXT = FONT.render(TEXT+str(score), True, color)
+		TEXTRECT = TEXT.get_rect()
+		TEXTRECT.center = (x, y)
+
+		SCREEN.blit(TEXT, TEXTRECT)
+
+	def getRect(self):
+		return self.PLAYERRECT
+
+# BALL CLASS
+class Ball:
+	def __init__(self, posx, posy, radius, speed, color):
+		self.posx = posx
+		self.posy = posy
+		self.radius = radius
+		self.speed = speed
+		self.color = color
+		self.xFac = 1
+		self.yFac = -1
+		self.ball = pygame.draw.circle(
+			SCREEN, self.color, (self.posx, self.posy), self.radius)
+		self.firstTime = 1
+
+	def display(self):
+		self.ball = pygame.draw.circle(
+			SCREEN, self.color, (self.posx, self.posy), self.radius)
+
+	def update(self):
+		self.posx += self.speed*self.xFac
+		self.posy += self.speed*self.yFac
+
+		# IF THE BALL HITS THE TOP OR BOTTOM SURFACES, THEN THE SIGN OF 
+  		# YFac IS CHANGED
+		# AND IT RESULTS IN A REFLECTION
+		
+		if self.posy <= 0 or self.posy >= SCREEN_HEIGHT:
+			self.yFac *= -1
+
+		if self.posx <= 0 and self.firstTime:
+			self.firstTime = 0
+			return 1
+		elif self.posx >= SCREEN_WIDTH and self.firstTime:
+			self.firstTime = 0
+			return -1
+		else:
+			return 0
+
+	def reset(self):
+		self.posx = SCREEN_WIDTH//2
+		self.posy = SCREEN_HEIGHT//2
+		self.xFac *= -1
+		self.firstTime = 1
+
+	# Used to reflect the ball along the X-axis
+	def hit(self):
+		self.xFac *= -1
+
+	def getRect(self):
+		return self.ball
 
 
-# 4) TEXT DISPLAY COORDINATES
-TEXTRECT1.center = (200, 50)
-TEXTRECT2.center = (600, 50)
+# GAME MANAGER
+def main():
+	RUNNING = True
 
-# WHILE PROGRAM IS RUNNING
-RUNNING = True
+	# DEFINING PLAYERS/BALL
+	PLAYER1 = PLAYER(20, 0, 10, 100, 10, WHITE)
+	PLAYER2 = PLAYER(SCREEN_WIDTH-30, 0, 10, 100, 10, WHITE)
+	BALL = Ball(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, 7, 7, WHITE)
 
-while RUNNING:
-        
-    SCREEN.fill(BLACK)
-    
-    # DISPLAYING PLAYER SCORE
-    SCREEN.blit(TEXT1, TEXTRECT1)
-    SCREEN.blit(TEXT2, TEXTRECT2)
+	LISTOFPLAYERS = [PLAYER1, PLAYER2]
 
-    # DISPLAYING PLAYER KEYBINDS FOR 3 SECONDS [W.I.P]
-    SCREEN.blit(TEXT_KEY1, TEXTRECT_KEY1) and SCREEN.blit(TEXT_KEY2, TEXTRECT_KEY2)
-    
+	# Initial parameters of the players
+	PLAYER1_SCORE, PLAYER2_SCORE = 0, 0
+	PLAYER1_YFAC, PLAYER2_YFAC = 0, 0
 
-    # DRAWING PLAYER(S)
-    PLAYER1 = pygame.draw.rect(SCREEN, WHITE, PLAYER1)
-    PLAYER2 = pygame.draw.rect(SCREEN, WHITE, PLAYER2)
-    # DRAWING BALL
-    BALL = pygame.draw.rect(SCREEN, WHITE, BALL)
+	while RUNNING:
+		SCREEN.fill(BLACK)
 
+		# EVENT HANDLING
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				RUNNING = False
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_UP:
+					PLAYER2_YFAC = -1
+				if event.key == pygame.K_DOWN:
+					PLAYER2_YFAC = 1
+				if event.key == pygame.K_w:
+					PLAYER1_YFAC = -1
+				if event.key == pygame.K_s:
+					PLAYER1_YFAC = 1
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+					PLAYER2_YFAC = 0
+				if event.key == pygame.K_w or event.key == pygame.K_s:
+					PLAYER1_YFAC = 0
 
+		# Collision detection
+		for PLAYER_G in LISTOFPLAYERS:
+			if pygame.Rect.colliderect(BALL.getRect(), PLAYER_G.getRect()):
+				BALL.hit()
 
-    
+		# Updating the objects
+		PLAYER1.update(PLAYER1_YFAC)
+		PLAYER2.update(PLAYER2_YFAC)
+		POINT = BALL.update()
 
+		# -1 -> PLAYER 1 HAS SCORED
+		# +1 -> PLAYER 2 HAS SCORED
+		# 0 -> NONE OF THEM SCORED
+		if POINT == -1:
+			PLAYER1_SCORE += 1
+		elif POINT == 1:
+			PLAYER2_SCORE += 1
 
-    # KEYBINDS
-    KEYS = pygame.key.get_pressed()
+		# SOMEONE HAS SCORED
+		# A POINT AND THE BALL IS OUT OF BOUNDS.
+		# SO, WE RESET IT'S POSITION
+		if POINT: 
+			BALL.reset()
 
-    # KEYBINDS [PLAYER 1]
-    
-    # UP
-    if KEYS[pygame.K_w]:
-        time.sleep(0.005)
-        PLAYER1.y -= 10 * 0.1
-    
-    # DOWN
-    if KEYS[pygame.K_s]:
-        time.sleep(0.005)
-        PLAYER1.y += 10 * 0.1
-        
-    
-    # KEYBINDS [PLAYER 2]
-        
-    # UP 
-    if KEYS[pygame.K_UP]:
-        time.sleep(0.005)
-        PLAYER2.y -= 10 * 0.1
+		# DISPLAYING THE PLAYERS AND BALL ON THE SCREEN
+		PLAYER1.display()
+		PLAYER2.display()
+		BALL.display()
 
-    # DOWN
-    if KEYS[pygame.K_DOWN]:
-        time.sleep(0.005)
-        PLAYER2.y += 10 * 0.1
-    
-    # BALL MOVE
-        BALLCOORDINATE_X += 1
-
-    # UNIQUE BOUNDARIES [TELEPORTS THE PLAYER TO THE OPPOSITE SIDE]
-    
-    # PLAYER 1 HOLDING [W] UPWARDS
-    if PLAYER1.y == 1:
-        KEYS = pygame.K_w
-        PLAYER1.y = 500
-
-    # PLAYER 1 HOLDING [S] DOWNWARDS
-    elif PLAYER1.y == 520:
-        KEYS = pygame.K_s
-        PLAYER1.y = 20
-  
-       
-    # PLAYER 2 HOLDING [ARROW KEY UP]
-    if PLAYER2.y == 1:
-        KEYS = pygame.K_w
-        PLAYER2.y = 500
-
-    # PLAYER 2 HOLDING [ARROW KEY DOWN]
-    elif PLAYER2.y == 520:
-        KEYS = pygame.K_s
-        PLAYER2.y = 20
-    
-    # PLAYER HITTING THE BALL
-    
-    
+		# DISPLAYING THE SCORES OF THE PLAYERS
+		PLAYER1.displayScore("P1 : ", 
+						PLAYER1_SCORE, 100, 80, WHITE)
+		PLAYER2.displayScore("P2 : ", 
+						PLAYER1_SCORE, SCREEN_WIDTH-100, 80, WHITE)
+		
+		# ADD THE UNIQUE BOUNDARIES
+		#if PLAYER1 
+						
+		pygame.display.update()
+		CLOCK.tick(FPS)	 
 
 
-
-  # Updates every frame
-    pygame.display.flip()
-    
-    # jjhgghma   
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            RUNNING = False
-    
-    # test
+if __name__ == "__main__":
+	main()
+	pygame.quit()
