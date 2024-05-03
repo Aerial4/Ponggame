@@ -9,6 +9,7 @@
 
 # LIBARIES
 import pygame
+import time
 
 # IMPORTING FONT
 pygame.font.init()
@@ -16,24 +17,28 @@ pygame.font.init()
 pygame.init()
 
 
-
 # DEFINING FONT THAT IS USED TO RENDER THE TEXT
 FONT = pygame.font.SysFont("Tempus Sans ITC", 20)
 
-# RGB values of standard colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
 
-# Basic parameters of the screen
+# DEFINING COLORS
+BLACK = pygame.Color(0, 0, 0)
+WHITE = pygame.Color(255, 255, 255)
+RED = pygame.Color(255, 0, 0)
+BLUE = pygame.Color(0, 0, 255)
+GREEN = pygame.Color(0, 255, 0)
+
+
+# DEFINING THE SCREEN MEASUREMENTS
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pong")
 
+# FRAMES PER SECOND [AFFECTS THE GAMEPLAY SPEED]
 CLOCK = pygame.time.Clock() 
 FPS = 60
 
-# PLAYER CLASS
+# PLAYER CLASS [DEFINING PLAYERS]
 class PLAYER:
 		# Take the initial position, dimensions, speed and color of the object
 	def __init__(self, posx, posy, width, height, speed, color):
@@ -65,17 +70,17 @@ class PLAYER:
 		# Updating the rect with the new values
 		self.PLAYERRECT = (self.posx, self.posy, self.width, self.height)
 
-	def displayScore(self, TEXT, score, x, y, color):
-		TEXT = FONT.render(TEXT+str(score), True, color)
+	def displayScore(self, TEXT, SCORE, X, Y, color):
+		TEXT = FONT.render(TEXT+str(SCORE), True, color)
 		TEXTRECT = TEXT.get_rect()
-		TEXTRECT.center = (x, y)
+		TEXTRECT.center = (X, Y)
 
 		SCREEN.blit(TEXT, TEXTRECT)
 
 	def getRect(self):
 		return self.PLAYERRECT
 
-# BALL CLASS
+# BALL CLASS [DEFINING BALL]
 class Ball:
 	def __init__(self, posx, posy, radius, speed, color):
 		self.posx = posx
@@ -131,19 +136,22 @@ class Ball:
 def main():
 	RUNNING = True
 
-	# DEFINING PLAYERS/BALL
-	PLAYER1 = PLAYER(20, 0, 10, 100, 10, WHITE)
-	PLAYER2 = PLAYER(SCREEN_WIDTH-30, 0, 10, 100, 10, WHITE)
+	# DEFINING PLAYERS/BALL [LENGTH, POSITION, SIZE [X][Y], SPEED]
+	PLAYER1 = PLAYER(20, 250, 10, 100, 10, WHITE)
+	PLAYER2 = PLAYER(SCREEN_WIDTH-30, 250, 10, 100, 10, WHITE)
 	BALL = Ball(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, 7, 7, WHITE)
 
 	LISTOFPLAYERS = [PLAYER1, PLAYER2]
 
-	# Initial parameters of the players
+	# DEFINING EACH PLAYERS SCORE AND THEIR Y-COORDINATES ON THE SCREEN
 	PLAYER1_SCORE, PLAYER2_SCORE = 0, 0
 	PLAYER1_YFAC, PLAYER2_YFAC = 0, 0
 
 	while RUNNING:
 		SCREEN.fill(BLACK)
+		
+        # THE FINAL SCORES
+		WIN_TEXT = PLAYER1_SCORE, PLAYER2_SCORE
 
 		# EVENT HANDLING
 		for event in pygame.event.get():
@@ -179,14 +187,21 @@ def main():
 		# 0 -> NONE OF THEM SCORED
 		if POINT == -1:
 			PLAYER1_SCORE += 1
+		
 		elif POINT == 1:
 			PLAYER2_SCORE += 1
+		
+			
 
 		# SOMEONE HAS SCORED
 		# A POINT AND THE BALL IS OUT OF BOUNDS.
 		# SO, WE RESET IT'S POSITION
+        # IF SOMEONE SCORED, PLAYERS GET RESETED TO THEIR START LOCATION
 		if POINT: 
 			BALL.reset()
+			PLAYER1.posy = 250
+			PLAYER2.posy = 250
+			time.sleep(1)
 
 		# DISPLAYING THE PLAYERS AND BALL ON THE SCREEN
 		PLAYER1.display()
@@ -197,10 +212,21 @@ def main():
 		PLAYER1.displayScore("P1 : ", 
 						PLAYER1_SCORE, 100, 80, WHITE)
 		PLAYER2.displayScore("P2 : ", 
-						PLAYER1_SCORE, SCREEN_WIDTH-100, 80, WHITE)
+						PLAYER2_SCORE, SCREEN_WIDTH-100, 80, WHITE)
 		
-		# ADD THE UNIQUE BOUNDARIES
-		#if PLAYER1 
+        
+		
+         # DISPLAYS A WINNER TEXT FOR THE FIRST PLAYER TO GET 11 POINTS
+		if PLAYER1_SCORE == 1:
+			PLAYER1.displayScore("PLAYER 1 WINS!",
+						WIN_TEXT, SCREEN_WIDTH/2, 100, WHITE)
+			
+			
+	
+			exit
+		elif PLAYER2_SCORE == 11:
+			print("PLAYER 2 WINS!")
+		 
 						
 		pygame.display.update()
 		CLOCK.tick(FPS)	 
@@ -209,3 +235,4 @@ def main():
 if __name__ == "__main__":
 	main()
 	pygame.quit()
+
