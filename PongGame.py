@@ -11,6 +11,8 @@
 import pygame
 import time
 
+
+
 # IMPORTING FONT
 pygame.font.init()
 
@@ -27,6 +29,7 @@ WHITE = pygame.Color(255, 255, 255)
 RED = pygame.Color(255, 0, 0)
 BLUE = pygame.Color(0, 0, 255)
 GREEN = pygame.Color(0, 255, 0)
+YELLOW = pygame.Color(255, 255, 0)
 
 
 # DEFINING THE SCREEN MEASUREMENTS
@@ -131,10 +134,11 @@ class Ball:
 	def getRect(self):
 		return self.ball
 
-
+	
 # GAME MANAGER
 def main():
 	RUNNING = True
+	
 
 	# DEFINING PLAYERS/BALL [LENGTH, POSITION, SIZE [X][Y], SPEED]
 	PLAYER1 = PLAYER(20, 250, 10, 100, 10, WHITE)
@@ -147,11 +151,17 @@ def main():
 	PLAYER1_SCORE, PLAYER2_SCORE = 0, 0
 	PLAYER1_YFAC, PLAYER2_YFAC = 0, 0
 
+	
+    
+
 	while RUNNING:
 		SCREEN.fill(BLACK)
 		
         # THE FINAL SCORES
 		WIN_TEXT = PLAYER1_SCORE, PLAYER2_SCORE
+		
+		
+       
 
 		# EVENT HANDLING
 		for event in pygame.event.get():
@@ -213,19 +223,55 @@ def main():
 						PLAYER1_SCORE, 100, 80, WHITE)
 		PLAYER2.displayScore("P2 : ", 
 						PLAYER2_SCORE, SCREEN_WIDTH-100, 80, WHITE)
+	
 		
-        
+        # IF A PLAYER SCORES, A TEXT POPS UP WHERE IT DISPLAYS + [THE AMOUNT OF SCORE] UNDER THEIR SCOREBOARD
+		if PLAYER1_SCORE >= 1:
+				PLAYER1.displayScore("+", 
+						PLAYER1_SCORE, SCREEN_WIDTH-700, 120, YELLOW)
+		if PLAYER2_SCORE >= 1:
+			PLAYER2.displayScore("+",
+						PLAYER2_SCORE, SCREEN_WIDTH-100, 120, YELLOW)
 		
-         # DISPLAYS A WINNER TEXT FOR THE FIRST PLAYER TO GET 11 POINTS
-		if PLAYER1_SCORE == 1:
-			PLAYER1.displayScore("PLAYER 1 WINS!",
-						WIN_TEXT, SCREEN_WIDTH/2, 100, WHITE)
+		
+         # PRINTS A WINNER TEXT ON THE TERMINAL FOR THE FIRST PLAYER TO GET 11 POINTS
+		 # PRINTS THE SCORE
+         # PRINTS THE AMOUNT OF TIME THE GAME TOOK
+		 
+         # PLAYER 1 VICTORY TEXT
+		if PLAYER1_SCORE == 11:
+			RUNNING = False
+			print("")
+			print("ARDA'S PONG [RESULTS]")
+			print("_____________________________________________________________")
+			print("")
+			print("🏆 WINNER 🏆")
+			print("  PLAYER 1")
+			print("")
+			print("🎇 SCORE 🎇")
+			print(" [", PLAYER1_SCORE, "-", PLAYER2_SCORE, "]")
+			print("_____________________________________________________________")
+                    
 			
 			
 	
-			exit
+
+    
+
+		# PLAYER 2 VICTORY TEXT
 		elif PLAYER2_SCORE == 11:
-			print("PLAYER 2 WINS!")
+			RUNNING = False
+			print("")
+			print("ARDA'S PONG [RESULTS]")
+			print("_____________________________________________________________")
+			print("")
+			print("🏆 WINNER 🏆")
+			print("  PLAYER 2")
+			print("")
+			print("🎇 SCORE 🎇")
+			print(" [", PLAYER1_SCORE, "-", PLAYER2_SCORE, "]")
+			print("_____________________________________________________________")
+                    
 		 
 						
 		pygame.display.update()
